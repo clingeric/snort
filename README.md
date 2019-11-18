@@ -19,5 +19,5 @@ sudo apt install snort
 
 Test to see if Snort was installed correctly:
 ```shell
-sudo snort -v
+sudo snort -V
 ```
