@@ -64,3 +64,30 @@ $ ping <ip address>
 Notice all of the **ALERT** messages coming from Snort on your VM
 
 ## Setting up Sneeze
+
+Clone this git repository onto your VM:
+
+```shell
+$ git clone https://github.com/clingeric/snort.git
+```
+
+Install Perl if it's not already:
+
+```shell
+$ sudo apt install perl
+```
+
+Install required packages for Perl:
+
+```shell 
+$ sudo apt install libnet-rawip-perl libperl4-corelibs-perl -y
+```
+
+Run Sneeze to see its options:
+
+```shell
+$ cd snort
+$ sudo perl sneeze.pl
+```
+
+Test-Connection -ComputerName 35.185.208.132 -Count 7 -AsJob | Wait-Job | Receive-Job
