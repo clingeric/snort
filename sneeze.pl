@@ -3,18 +3,18 @@
 # 8/3/2001
 # Don Bailey (baileydl@mitre.org) and Brian Caswell (bmc@mitre.org)
 
-require ‘getopts.pl’;
+require 'getopts.pl';
 
 # require destination and rule file or help
-Getopts(‘d:f:c:s:p:i:h:x’);
+Getopts('d:f:c:s:p:i:h:x');
 if ($opt_h || (!$opt_d && !$opt_f)) {
-die ‘Usage $0 -d <dest host> -f <rule file> [options]
+die 'Usage $0 -d <dest host> -f <rule file> [options]
 t-c counttLoop X times. -1 == forever. Default is 1.
 t-s ipttSpoof this IP as source. Default is your IP.
 t-p portttForce use of this source port.
 t-i interfacetOutbound interface. Default is eth0.
 t-x debugtTurn on debugging information.
-t-h helpttDuh? This is it.n’;
+t-h helpttDuh? This is it.n';
 }
 
 use Net::RawIP;
@@ -29,11 +29,11 @@ my $DEBUG = 0;
 if ($opt_x) { $DEBUG = 1; }
 
 my $refurls;
-$refurls{bugtraq} = ‘http://www.securityfocus.com/bid/’;
-$refurls{cve} = ‘http://cve.mitre.org/cgi-bin/cvename.cgi?name=’;
-$refurls{arachnids} = ‘http://www.whitehats.com/info/IDS’;
-$refurls{mcafee} = ‘http://vil.nai.com/vil/dispVirus.asp?virus_k=’;
-$refurls{url} = ‘http://’;
+$refurls{bugtraq} = 'http://www.securityfocus.com/bid/';
+$refurls{cve} = 'http://cve.mitre.org/cgi-bin/cvename.cgi?name=';
+$refurls{arachnids} = 'http://www.whitehats.com/info/IDS';
+$refurls{mcafee} = 'http://vil.nai.com/vil/dispVirus.asp?virus_k=';
+$refurls{url} = 'http://';
 
 # parse some options if they exist or set default values
 
@@ -57,14 +57,14 @@ sub add_rules
    my ($file) = @_;
    my @rules;
 
-   open(RULES,$file) || die ‘Cannot open $file!n’;
+   open(RULES,$file) || die 'Cannot open $file!n';
    my @lines = <RULES>;
    close (RULES);
 
    foreach my $line (@lines) {
       chomp ($line);
       if ($line =~ /^include (.*)$/) {
-          if ($opt_x) { print ‘Adding include of $1n’;}
+          if ($opt_x) { print 'Adding include of $1n';}
           my @line_rules = add_rules($1);
           push (@rules,@line_rules);
       }
@@ -84,7 +84,7 @@ sub set_vars
    {
       if ($line =~ /^var ([w]+)(.*)/)
       {
-         if ($DEBUG) { print ‘Got variable $1 set to $2n’;}
+         if ($DEBUG) { print 'Got variable $1 set to $2n';}
          $vars{$1} = $2;
       }
       foreach my $key (keys (%vars))
@@ -100,11 +100,11 @@ sub set_vars
 foreach $rule (@rulez) {
 
 my $dsize;
-        if ($rule =~ /^s*#/ || $rule eq ‘n’) {
+        if ($rule =~ /^s*#/ || $rule eq 'n') {
                 next;
         }
 
-        # only use ‘alert’ and ‘log’ rules
+        # only use 'alert' and 'log' rules
         # if ($rule !~ /^(alert|log)/) { next; }
 
         # ALERT|LOG PROTO src srcport direction dst dstport
@@ -124,7 +124,7 @@ else { $src = $forcesrc; }
         $rest = $8;
 
         $content = undef;
-        if ($rest =~ /msgs*:s*'([^’]+)/i) { $msg = $1; }
+        if ($rest =~ /msgs*:s*'([^']+)/i) { $msg = $1; }
         if ($rest =~ /flagss*:s*([^;]+)/i ) { $flags = $1; }
         if ($rest =~ /dsizes*:s*([^;]+)/i ) { $dsize= $1; }
         if ($rest =~ /classtypes*:s*([^;]+)/i ) {$type= $1; }
@@ -135,18 +135,18 @@ else { $src = $forcesrc; }
         my $payload;
         my $contents = $rest;
 
-        if ($contents =~ /contents*:s*'[^’]+.*contents*:s*'[^’]+/)
+        if ($contents =~ /contents*:s*'[^']+.*contents*:s*'[^']+/)
         {
            while ($contents =~ /content/)
            {
-           if ($contents =~ s/content:'([^’]+)’;s+offset:(d+);(.*)/$3/i)
+           if ($contents =~ s/content:'([^']+)';s+offset:(d+);(.*)/$3/i)
            {
               my $tmp = $1;
 my $offset = $2;
-              my $pad = ‘A’ x $offset;
+              my $pad = 'A' x $offset;
 push (@contents,parse_content($pad . $tmp));
 }
-           elsif ($contents =~ s/contents*:s*'([^’]+)(.*)/$2/i)
+           elsif ($contents =~ s/contents*:s*'([^']+)(.*)/$2/i)
            {
               push (@contents,parse_content($1));
 }
@@ -171,13 +171,13 @@ if($dsize) {
                 my $gtolt = $1;
                 my $length = length ($payload);
                 my $need = $dsize_len – $length;
-                if ($gtolt eq ‘>’) {
+                if ($gtolt eq '>') {
                         $need++;
-                } elsif ($gtolt eq ‘<‘) {
+                } elsif ($gtolt eq '<') {
                         $need–;
                 }
 
-                my $pad = ‘A’ x $need;
+                my $pad = 'A' x $need;
                 $payload = $payload . $pad;
         }
 
@@ -201,13 +201,13 @@ foreach my $attack (@attacks)
       $attack->{dstport} = int(rand(65535));
    }
 
-   print ‘ATTACK: $attack->{msg}n’;
-   if ($attack->{type}) { print ‘ATTACK TYPE: $attack->{type}n’; }
-   print ‘$attack->{proto} $attack->{src}:$attack->{srcport} -> $attack->{dst}:$attack->{dstport}n’;
+   print 'ATTACK: $attack->{msg}n';
+   if ($attack->{type}) { print 'ATTACK TYPE: $attack->{type}n'; }
+   print '$attack->{proto} $attack->{src}:$attack->{srcport} -> $attack->{dst}:$attack->{dstport}n';
    $refs = $attack->{refs};
-   if ($refs) { foreach (@$refs) { print ‘Reference => $_n’; } }
-   if ($DEBUG) { print ‘SIGNATURE $attack->{sig}n’; }
-   print ‘n’;
+   if ($refs) { foreach (@$refs) { print 'Reference => $_n'; } }
+   if ($DEBUG) { print 'SIGNATURE $attack->{sig}n'; }
+   print 'n';
 
    if ($attack->{proto} =~ /tcp/i) {
      $sneeze_tcp->set({ip =>{saddr => $attack->{src}, daddr => $attack->{dst}},
@@ -247,4 +247,4 @@ sub parse_content
      if ($post) { $end = parse_content($post); }
    }
    return ($pre . $hex2a . $end);
-}’
+}'
