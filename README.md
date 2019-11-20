@@ -11,7 +11,7 @@ Allow access to ports 20, 80, and 443
 
 Leave the settings on whatever you'd like. Snort doesn't need much to run 
 
-*I recommend staying within the free tier of whatever cloud provider you choose. 
+*I recommend staying within the free tier of whatever cloud provider you choose.* 
 
 ## Setting up Snort
 
@@ -38,13 +38,13 @@ ens4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1460 qdisc pfifo_fast state UP group
        valid_lft forever preferred_lft forever
 ```
 
-*remember the name of the adapter for later!
+*remember the name of the adapter and the IP address for later!*
 
 ```shell
 $ sudo apt install snort
 ```
 
-*enter the adapter name when prompted. Just hit enter when it asks about the subnet
+*enter the adapter name when prompted. Just hit enter when it asks about the subnet*
 
 Test to see if Snort was installed correctly:
 ```shell
