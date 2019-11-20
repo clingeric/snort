@@ -1,7 +1,21 @@
 # Snort
 IS 560 Snort Walkthrough
 
+## Setting up your VM
+
+For this tutorial, I'm going to use Google Cloud Platform (GCP), but feel free to use the cloud provider you're most familiar with. 
+
+First, create a new VM running Debian 10 (Buster)
+
+Allow access to ports 20, 80, and 443
+
+Leave the settings on whatever you'd like. Snort doesn't need much to run 
+
+*I recommend staying within the free tier of whatever cloud provider you choose. 
+
 ## Setting up Snort
+
+Login to your VM and update apt
 
 ```shell
 $ sudo apt update
@@ -61,33 +75,14 @@ Open a terminal and ping your VM:
 $ ping <ip address>
 ```
 
-Notice all of the **ALERT** messages coming from Snort on your VM
+Notice the **ALERT** messages coming from Snort on your VM
 
-## Setting up Sneeze
+## Attacking Snort
 
-Clone this git repository onto your VM:
+Use Powershell to overwhelm Snort
 
-```shell
-$ git clone https://github.com/clingeric/snort.git
+```powershell
+Test-Connection -ComputerName 35.185.208.132 -Count 50000 -AsJob | Wait-Job | Receive-Job
 ```
 
-Install Perl if it's not already:
-
-```shell
-$ sudo apt install perl
-```
-
-Install required packages for Perl:
-
-```shell 
-$ sudo apt install libnet-rawip-perl libperl4-corelibs-perl -y
-```
-
-Run Sneeze to see its options:
-
-```shell
-$ cd snort
-$ sudo perl sneeze.pl
-```
-
-Test-Connection -ComputerName 35.185.208.132 -Count 7 -AsJob | Wait-Job | Receive-Job
+Notice that *hopefully* Snort has dropped quite a few packets. This means that rouge packets have a greater chance to get through to the target machine.
